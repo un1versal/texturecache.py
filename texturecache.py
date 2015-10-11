@@ -60,7 +60,7 @@ lock = threading.RLock()
 class MyConfiguration(object):
   def __init__(self, argv):
 
-    self.VERSION = "2.2.8"
+    self.VERSION = "2.2.9"
 
     self.GITHUB = "https://raw.github.com/MilhouseVH/texturecache.py/master"
     self.ANALYTICS_GOOD = "http://goo.gl/BjH6Lj"
@@ -2441,9 +2441,9 @@ class MyJSONComms(object):
         title = self.getTitleForLibraryItem(iType, libraryId)
 
         if title:
-          self.logger.out("Updating Library: New %-9s %5d [%s]\n" % (iType + "id", libraryId, title))
+          self.logger.out("Updating library: New %-9s %5d [%s]\n" % (iType + "id", libraryId, title))
         else:
-          self.logger.out("Updating Library: New %-9s %5d\n" % (iType + "id", libraryId))
+          self.logger.out("Updating library: New %-9s %5d\n" % (iType + "id", libraryId))
 
     return True if method.endswith("Library.OnScanFinished") else False
 
@@ -2464,7 +2464,7 @@ class MyJSONComms(object):
         if title:
           self.logger.out("Cleaning library: %-9s %5d [%s]\n" % (iType + "id", libraryId, title))
         else:
-          self.logger.out("Cleaning library: %-9s %5d [%s]\n" % (iType + "id", libraryId, title))
+          self.logger.out("Cleaning library: %-9s %5d\n" % (iType + "id", libraryId))
 
     return True if method.endswith("Library.OnCleanFinished") else False
 
@@ -2547,7 +2547,7 @@ class MyJSONComms(object):
             REQUEST["params"]["refreshepisodes"] = False
         self.sendJSON(REQUEST, "lib%s" % method)
         if doRefresh:
-          gLogger.out("Updating Library: Refreshed %s %d [%s]" % (idName, libraryid, libraryitem["name"]), newLine=True)
+          gLogger.out("Updating library: Refreshed %s %d [%s]" % (idName, libraryid, libraryitem["name"]), newLine=True)
 
       if not doRefresh and not rootScan: self.scanDirectory(scanMethod, path=dpath)
 
@@ -4449,7 +4449,7 @@ def jsonQuery(action, mediatype, filter="", force=False, extraFields=False, resc
 
   if mediatype == "tvshows":
     TOTALS.addSeasonAll()
-    gLogger.progress("Loading TV Shows...")
+    gLogger.progress("Loading TV shows...")
   else:
     gLogger.progress("Loading %s..." % mediatype.capitalize())
 
@@ -4554,7 +4554,7 @@ def jsonQuery(action, mediatype, filter="", force=False, extraFields=False, resc
   if mediatype == "tvshows" and gConfig.QUERY_SEASONS:
     for tvshow in data:
       title = tvshow["title"]
-      gLogger.progress("Loading TV Show: %s..." % title)
+      gLogger.progress("Loading TV show: %s..." % title)
 
       (s2, t2, i2, data2) = jcomms.getData(action, "seasons", filter, extraFields, tvshow=tvshow, lastRun=lastRun, uniquecast=UCAST)
       if not "result" in data2: return
@@ -6741,7 +6741,7 @@ def getAllFiles(keyFunction):
 
   if "result" in tvdata and "tvshows" in tvdata["result"]:
     for tvshow in tvdata["result"]["tvshows"]:
-      gLogger.progress("Loading TVShows: %s..." % tvshow["title"])
+      gLogger.progress("Loading TV shows: %s..." % tvshow["title"])
       tvshowid = tvshow["tvshowid"]
 
       for a in tvshow.get("art", {}):
@@ -6980,7 +6980,7 @@ def get_mangled_artwork(jcomms):
           addItems(i, mtype, idname)
         if title != "": gLogger.progress("Parsing %s: %s..." % (mediatype, title))
 
-  gLogger.progress("Loading TVShows...")
+  gLogger.progress("Loading TV shows...")
 
   REQUEST = {"method":"VideoLibrary.GetTVShows",
              "params": {"sort": {"order": "ascending", "method": "title"},
@@ -6990,7 +6990,7 @@ def get_mangled_artwork(jcomms):
 
   if "result" in tvdata and "tvshows" in tvdata["result"]:
     for tvshow in tvdata["result"]["tvshows"]:
-      gLogger.progress("Loading TVShows: %s..." % tvshow["title"])
+      gLogger.progress("Loading TV shows: %s..." % tvshow["title"])
 
       tvshowid = tvshow["tvshowid"]
       addItems(tvshow, "tvshow", "tvshowid")
@@ -7009,7 +7009,7 @@ def get_mangled_artwork(jcomms):
             gLogger.err("WARNING: TV show [%s] has invalid season (%d) - ignored" % (tvshow["title"], seasonid), newLine=True)
             continue
 
-          gLogger.progress("Loading: TV shows [%s, season %d]..." % (tvshow["title"], seasonid))
+          gLogger.progress("Loading TV shows: [%s, season %d]..." % (tvshow["title"], seasonid))
 
           # Can't set items on season unless seasonid is present...
           if "seasonid" in season:
